@@ -1,1 +1,333 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCHIVE | S/S 2026 Lookbook</title>
+    <style>
+        /* =========================================
+           공통 스타일 (메인 페이지와 동일한 아이덴티티)
+           ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #fff;
+            color: #1a1a1a;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 네비게이션 (검은 글씨 버전 - 배경이 흰색이므로) */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo a {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #1a1a1a;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1a1a1a;
+            margin-left: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #888;
+            text-decoration: line-through; /* 현재 페이지 표시 */
+        }
+
+        /* 푸터 (메인과 동일) */
+        footer {
+            padding: 100px 50px;
+            background: #fafafa;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            border-top: 1px solid #eee;
+            margin-top: 100px;
+        }
+        .footer-col h4 { margin-bottom: 20px; font-size: 0.9rem; text-transform: uppercase; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { font-size: 0.85rem; color: #666; margin-bottom: 10px; cursor: pointer; }
+
+        /* =========================================
+           Lookbook 전용 스타일
+           ========================================= */
+        
+        /* 룩북 헤더 */
+        .lb-header {
+            padding: 180px 50px 100px;
+            text-align: center;
+        }
+        
+        .lb-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+        }
+
+        .lb-header p {
+            color: #666;
+            max-width: 500px;
+            margin: 0 auto;
+            font-size: 0.95rem;
+        }
+
+        /* 룩북 레이아웃 (지그재그) */
+        .look-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 50px;
+        }
+
+        .look-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 150px; /* 룩 사이의 간격 */
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s forwards;
+        }
+
+        /* 짝수 번째 룩은 순서 반대로 (텍스트-이미지) */
+        .look-row:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        /* 애니메이션 딜레이 */
+        .look-row:nth-child(1) { animation-delay: 0.2s; }
+        .look-row:nth-child(2) { animation-delay: 0.4s; }
+        .look-row:nth-child(3) { animation-delay: 0.6s; }
+        .look-row:nth-child(4) { animation-delay: 0.8s; }
+
+        .look-image {
+            flex: 1;
+            overflow: hidden;
+            height: 800px; /* 세로로 긴 이미지 비율 유지 */
+        }
+
+        .look-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .look-row:hover .look-image img {
+            transform: scale(1.03);
+        }
+
+        .look-content {
+            flex: 1;
+            padding: 0 80px; /* 이미지와 텍스트 사이 간격 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .look-number {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #999;
+            margin-bottom: 20px;
+            display: block;
+            letter-spacing: 2px;
+        }
+
+        .look-title {
+            font-size: 2rem;
+            font-weight: 500;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .look-desc {
+            color: #555;
+            margin-bottom: 40px;
+            max-width: 400px;
+            font-size: 0.95rem;
+        }
+
+        .shop-link {
+            text-decoration: none;
+            color: #1a1a1a;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 5px;
+            display: inline-block;
+            width: fit-content;
+            transition: opacity 0.3s;
+        }
+
+        .shop-link:hover {
+            opacity: 0.6;
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 반응형 */
+        @media (max-width: 900px) {
+            .look-row, .look-row:nth-child(even) {
+                flex-direction: column;
+                margin-bottom: 100px;
+            }
+            
+            .look-image {
+                width: 100%;
+                height: 600px;
+            }
+
+            .look-content {
+                padding: 40px 0 0 0;
+                width: 100%;
+                text-align: left;
+            }
+
+            .look-title { font-size: 1.8rem; }
+            .lb-header h1 { font-size: 2.2rem; }
+            footer { grid-template-columns: repeat(2, 1fr); }
+            nav { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <a href="index.html">ARCHIVE</a>
+        </div>
+        <div class="nav-links">
+            <a href="lookbook.html" class="active">Lookbook</a>
+            <a href="#">Shop</a>
+        </div>
+    </nav>
+
+    <header class="lb-header">
+        <h1>2026 SPRING / SUMMER</h1>
+        <p>자연의 질감에서 영감을 받은 이번 컬렉션은<br>도시의 소음 속에서 고요한 균형을 찾아냅니다.</p>
+    </header>
+
+    <div class="look-container">
+        
+        <div class="look-row">
+            <div class="look-image">
+                <img src="fashion.jpg" alt="Look 01">
+            </div>
+            <div class="look-content">
+                <span class="look-number">LOOK 01</span>
+                <h2 class="look-title">Monochrome<br>Layers</h2>
+                <p class="look-desc">
+                    부드러운 울 소재와 구조적인 실루엣의 조화. 
+                    미니멀리즘의 정수를 보여주는 레이어드 스타일링을 제안합니다.
+                </p>
+                <a href="#" class="shop-link">Shop the Look</a>
+            </div>
+        </div>
+
+        <div class="look-row">
+            <div class="look-image">
+                <img src="https://images.unsplash.com/photo-1485230946086-1d99d529c7b9?auto=format&fit=crop&w=800&q=80" alt="Look 02">
+            </div>
+            <div class="look-content">
+                <span class="look-number">LOOK 02</span>
+                <h2 class="look-title">Urban<br>Utility</h2>
+                <p class="look-desc">
+                    기능성과 심미성의 경계를 허무는 유틸리티 자켓.
+                    서울의 거리에서 영감을 받은 실용적인 디자인입니다.
+                </p>
+                <a href="#" class="shop-link">Shop the Look</a>
+            </div>
+        </div>
+
+        <div class="look-row">
+            <div class="look-image">
+                <img src="https://images.unsplash.com/photo-1532453288672-3a27e9be9efd?auto=format&fit=crop&w=800&q=80" alt="Look 03">
+            </div>
+            <div class="look-content">
+                <span class="look-number">LOOK 03</span>
+                <h2 class="look-title">Soft<br>Tailoring</h2>
+                <p class="look-desc">
+                    흐르는 듯한 핏감의 셋업 수트.
+                    격식과 편안함 사이의 완벽한 밸런스를 경험해보세요.
+                </p>
+                <a href="#" class="shop-link">Shop the Look</a>
+            </div>
+        </div>
+
+        <div class="look-row">
+            <div class="look-image">
+                <img src="https://images.unsplash.com/photo-1549492423-a75fad630d5b?auto=format&fit=crop&w=800&q=80" alt="Look 04">
+            </div>
+            <div class="look-content">
+                <span class="look-number">LOOK 04</span>
+                <h2 class="look-title">Neutral<br>Palette</h2>
+                <p class="look-desc">
+                    베이지와 아이보리의 톤온톤 매치.
+                    가장 본질적인 색감으로 완성하는 우아함.
+                </p>
+                <a href="#" class="shop-link">Shop the Look</a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-col">
+            <div class="logo" style="margin-bottom: 20px;"><a href="index.html" style="text-decoration:none; color:inherit;">ARCHIVE</a></div>
+            <p style="font-size: 0.8rem; color: #888;">&copy; 2026 ARCHIVE Studio.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Shop</h4>
+            <ul>
+                <li>All Products</li>
+                <li>New Arrivals</li>
+                <li>Archive</li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+                <li>Contact</li>
+                <li>Shipping</li>
+                <li>Returns</li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Social</h4>
+            <ul>
+                <li>Instagram</li>
+                <li>Pinterest</li>
+                <li>Twitter</li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+</html>
